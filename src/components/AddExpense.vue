@@ -1,37 +1,36 @@
 <template>
-  <v-card class="pa-4 ma-4">
-    <v-text-field
-      label="Expense Name"
-      v-model="name"
-      outlined
-    />
-    <v-text-field
-      label="Amount"
-      v-model="amount"
-      type="number"
-      outlined
-    />
-    <v-btn color="primary" @click="submitExpense">Add Expense</v-btn>
-  </v-card>
+  <v-form>
+    <v-text-field v-model="description" label="Description" />
+    <v-text-field v-model="amount" label="Amount" type="number" />
+    <v-text-field v-model="category" label="Category" />
+    <v-btn color="primary" @click="addExpense">Add Expense</v-btn>
+  </v-form>
 </template>
 
 <script setup>
 import { ref } from 'vue'
-import { useExpenseStore } from '../stores/expenseStore'
+import { useExpenseStore } from '../store/expenseStore'
 
-const name = ref('')
+const store = useExpenseStore()
+
+const description = ref('')
 const amount = ref('')
+const category = ref('')
 
-const expenseStore = useExpenseStore()
-
-function submitExpense() {
-  if (name.value && amount.value) {
-    expenseStore.addExpense({
-      name: name.value,
-      amount: parseFloat(amount.value)
+const addExpense = () => {
+  if (description.value && amount.value && category.value) {
+    store.addExpense({
+      description: description.value,
+      amount: parseFloat(amount.value),
+      category: category.value,
     })
-    name.value = ''
+
+    // Clear the form
+    description.value = ''
     amount.value = ''
+    category.value = ''
+  } else {
+    alert('Please fill all fields')
   }
 }
 </script>

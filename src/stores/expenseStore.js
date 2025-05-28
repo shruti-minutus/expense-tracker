@@ -1,12 +1,16 @@
+// src/store/expenseStore.js
 import { defineStore } from 'pinia'
+import { ref } from 'vue'
 
-export const useExpenseStore = defineStore('expense', {
-  state: () => ({
-    expenses: []
-  }),
-  actions: {
-    addExpense(expense) {
-      this.expenses.push(expense)
-    }
+export const useExpenseStore = defineStore('expense', () => {
+  const expenses = ref([])
+
+  const addExpense = (expense) => {
+    expenses.value.push(expense)
+  }
+
+  return {
+    expenses,
+    addExpense,
   }
 })
