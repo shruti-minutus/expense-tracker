@@ -9,7 +9,7 @@
 
 <script setup>
 import { ref } from 'vue'
-import { useExpenseStore } from '../store/expenseStore'
+import { useExpenseStore } from '../stores/expenseStore'
 
 const store = useExpenseStore()
 

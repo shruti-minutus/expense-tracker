@@ -7,7 +7,7 @@
 </template>
 
 <script setup>
-import { useExpenseStore } from '../store/expenseStore'
+import { useExpenseStore } from '../stores/expenseStore'
 import { computed } from 'vue'
 
 const store = useExpenseStore()
