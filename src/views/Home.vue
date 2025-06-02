@@ -6,19 +6,50 @@
       <AddExpense :expenseToEdit="selectedExpense" @close="dialog = false" />
     </v-dialog>
 
-    <ExpenseList @edit-expense="openEditDialog" @delete-expense="handleDeleteExpense" />
+    <v-select
+      v-model="selectedCategory"
+      :items="categories"
+      label="Filter by Category"
+      clearable
+    />
+
+    <v-text-field
+      v-model="startDate"
+      label="Start Date"
+      type="date"
+      clearable
+    />
+
+    <v-text-field
+      v-model="endDate"
+      label="End Date"
+      type="date"
+      clearable
+    />
+
+    <ExpenseList
+      :expenses="filteredExpenses"
+      @edit-expense="openEditDialog"
+      @delete-expense="handleDeleteExpense"
+    />
   </v-container>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import AddExpense from '@/components/AddExpense.vue'
 import ExpenseList from '@/components/ExpenseList.vue'
 import { useExpenseStore } from '@/stores/expenseStore'
 
 const store = useExpenseStore()
+
 const dialog = ref(false)
 const selectedExpense = ref(null)
+const selectedCategory = ref(null)
+const startDate = ref(null)
+const endDate = ref(null)
+
+const categories = ['Food', 'Travel', 'Utilities', 'Shopping'] // example categories
 
 const openAddDialog = () => {
   selectedExpense.value = null
@@ -30,7 +61,11 @@ const openEditDialog = (expense) => {
   dialog.value = true
 }
 
-function handleDeleteExpense(id) {
+const handleDeleteExpense = (id) => {
   store.deleteExpense(id)
 }
+
+const filteredExpenses = computed(() =>
+  store.filteredExpenses(selectedCategory.value, startDate.value, endDate.value)
+)
 </script>
