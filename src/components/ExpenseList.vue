@@ -36,12 +36,9 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
-import { useExpenseStore } from '../stores/expenseStore'
-
-const store = useExpenseStore()
-const expenses = computed(() => store.expenses)
-
+const props = defineProps({
+  expenses: Array
+})
 function amountClass(amount) {
   return amount > 1000 ? 'text-danger' : 'text-success'
 }
