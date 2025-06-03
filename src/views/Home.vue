@@ -13,19 +13,25 @@
       clearable
     />
 
+ <v-row class="d-flex align-center">
+  <v-col cols="12" sm="6" md="3">
     <v-text-field
       v-model="startDate"
       label="Start Date"
       type="date"
       clearable
     />
+  </v-col>
 
+  <v-col cols="12" sm="6" md="3">
     <v-text-field
       v-model="endDate"
       label="End Date"
       type="date"
       clearable
     />
+  </v-col>
+</v-row>
 
     <ExpenseList
       :expenses="filteredExpenses"
