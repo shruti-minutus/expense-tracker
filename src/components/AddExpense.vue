@@ -15,10 +15,12 @@
         :rules="[v => !!v || 'Amount is required', v => v > 0 || 'Amount must be positive']"
         required
       />
-      <v-text-field
+      <v-select
         v-model="category"
+        :items="categories"
         label="Category"
         :rules="[v => !!v || 'Category is required']"
+        clearable
         required
       />
       <v-text-field
@@ -45,7 +47,12 @@ import { useExpenseStore } from '../stores/expenseStore'
 
 const props = defineProps({
   expenseToEdit: Object,
+  categories: {
+    type: Array,
+    default: () => []
+  }
 })
+
 
 const emit = defineEmits(['close'])
 

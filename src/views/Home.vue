@@ -3,7 +3,12 @@
     <v-btn color="primary" @click="openAddDialog">+ Add Expense</v-btn>
 
     <v-dialog v-model="dialog" max-width="500">
-      <AddExpense :expenseToEdit="selectedExpense" @close="dialog = false" />
+      <AddExpense
+  :expenseToEdit="selectedExpense"
+  :categories="categories"
+  @close="dialog = false"
+/>
+
     </v-dialog>
 
     <v-select
