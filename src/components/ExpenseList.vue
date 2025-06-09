@@ -1,59 +1,40 @@
 <template>
   <v-container>
-    <v-row>
-      <v-col
-        v-for="expense in expenses"
-        :key="expense.id"
-        cols="12"
-        md="6"
-        lg="4"
-      >
-        <v-card class="mx-auto my-3" outlined hover>
-          <v-card-title class="d-flex justify-space-between align-center">
-            <div>
-              <strong>{{ expense.description }}</strong>
-              <div class="text--secondary">{{ expense.category }}</div>
-            </div>
-            <div :class="amountClass(expense.amount)">
-              ₹{{ expense.amount.toFixed(2) }}
-            </div>
-          </v-card-title>
+    <v-data-table
+      :headers="headers"
+      :items="expenses"
+      :items-per-page="5"
+      class="elevation-1"
+    >
+      <template #item.actions="{ item }">
+        <v-btn icon size="small" @click="$emit('edit-expense', item)" :title="'Edit ' + item.description">
+          <v-icon color="primary">mdi-pencil</v-icon>
+        </v-btn>
+        <v-btn icon size="small" @click="$emit('delete-expense', item.id)" :title="'Delete ' + item.description">
+          <v-icon color="red">mdi-delete</v-icon>
+        </v-btn>
+      </template>
 
-          <v-card-subtitle>{{ expense.date }}</v-card-subtitle>
-
-          <v-card-actions>
-            <v-btn icon @click="$emit('edit-expense', expense)">
-              <v-icon color="primary">mdi-pencil</v-icon>
-            </v-btn>
-            <v-btn icon @click="$emit('delete-expense', expense.id)">
-              <v-icon color="red">mdi-delete</v-icon>
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-col>
-    </v-row>
+      <template #no-data>
+        <div class="text-center text-grey">No expenses found.</div>
+      </template>
+    </v-data-table>
   </v-container>
 </template>
 
 <script setup>
-import { computed } from 'vue'
-import { useExpenseStore } from '../stores/expenseStore'
+const props = defineProps({
+  expenses: {
+    type: Array,
+    required: true,
+  }
+})
 
-const store = useExpenseStore()
-const expenses = computed(() => store.expenses)
-
-function amountClass(amount) {
-  return amount > 1000 ? 'text-danger' : 'text-success'
-}
+const headers = [
+  { text: 'Description', value: 'description' },
+  { text: 'Amount (₹)', value: 'amount' },
+  { text: 'Category', value: 'category' },
+  { text: 'Date', value: 'date' },
+  { text: 'Actions', value: 'actions', sortable: false }
+]
 </script>
-
-<style>
-.text-danger {
-  color: #e53935;
-  font-weight: bold;
-}
-.text-success {
-  color: #43a047;
-  font-weight: bold;
-}
-</style>
